@@ -6,11 +6,13 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 import { useState } from "react";
 import { hotelInputs } from "../../formSource";
 import useFetch from "../../hooks/useFetch";
+import {  useNavigate } from "react-router-dom";
 
 const NewHotel = () => {
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
   const [rooms, setRooms] = useState([]);
+  const navigate = useNavigate()
 
   const { data, loading, error } = useFetch("http://localhost:8800/api/rooms");
 
@@ -26,21 +28,21 @@ const NewHotel = () => {
     setRooms(value);
   };
 
-  function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == " ") {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
+  // function getCookie(cname) {
+  //   let name = cname + "=";
+  //   let decodedCookie = decodeURIComponent(document.cookie);
+  //   let ca = decodedCookie.split(";");
+  //   for (let i = 0; i < ca.length; i++) {
+  //     let c = ca[i];
+  //     while (c.charAt(0) == " ") {
+  //       c = c.substring(1);
+  //     }
+  //     if (c.indexOf(name) == 0) {
+  //       return c.substring(name.length, c.length);
+  //     }
+  //   }
+  //   return "";
+  // }
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -68,7 +70,7 @@ const NewHotel = () => {
 
       console.log(newhotel);
 
-      const res = await fetch("http://localhost:8800/api/hotels", {
+      const res = await fetch(`${process.env.REACT.APP.API.SERVER}hotels`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -77,7 +79,8 @@ const NewHotel = () => {
         body: JSON.stringify(newhotel),
       });
       if (res.ok) {
-        console.log("yes");
+        navigate("/hotels")
+
       }
     } catch (err) {
       console.log(err);

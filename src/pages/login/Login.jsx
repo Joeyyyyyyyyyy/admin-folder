@@ -28,7 +28,7 @@ const Login = () => {
       //   credentials
       // );
 
-      const res = await fetch("http://localhost:8800/api/auth/login", {
+      const res = await fetch(`${process.env.REACT.APP.API.SERVER}auth/login`, {
         method: "POST",
         credentials: "include",
         headers: {

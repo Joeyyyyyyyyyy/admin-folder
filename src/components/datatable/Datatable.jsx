@@ -1,28 +1,45 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
 // import { userColumns, userRows } from "../../datatablesource";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import axios from "axios";
+import Swal from "sweetalert2";
 
-const Datatable = ({columns}) => {
+const Datatable = ({ columns }) => {
+  const navigate = useNavigate()
   const location = useLocation();
   const path = location.pathname.split("/")[1];
   const [list, setList] = useState({});
-  const { data, loading, error } = useFetch(`http://localhost:8800/api/${path}`);
+  const { data, loading, error } = useFetch(
+    `${process.env.REACT.APP.API.SERVER}${path}`
+  );
 
   useEffect(() => {
     setList(data);
   }, [data]);
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8800/api/${path}/${id}`);
-      setList(list.filter((item) => item._id !== id));
-    } catch (err) {
-      console.log(err)
-    }
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`http://localhost:8800/api/${path}/${id}`, {
+          withCredentials: true,
+        });
+        setList(list.filter((item) => item._id !== id));
+
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        navigate("/")
+      }
+    });
   };
 
   const actionColumn = [
@@ -30,6 +47,7 @@ const Datatable = ({columns}) => {
       field: "action",
       headerName: "Action",
       width: 200,
+
       renderCell: (params) => {
         return (
           <div className="cellAction">
