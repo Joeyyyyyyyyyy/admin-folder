@@ -16,7 +16,7 @@ const NewRoom = () => {
   const [isLoading, setIsLoading] = useState(false);
   console.log(rooms);
 
-  const { data, loading, error } = useFetch("http://localhost:8800/api/hotels");
+  const { data, loading, error } = useFetch(`${process.env.REACT_APP_API_SERVER}hotels`);
 
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -28,7 +28,7 @@ const NewRoom = () => {
     const roomNumbers = rooms.split(",").map((room) => ({ number: room }));
     try {
       await axios.post(
-        `${process.env.REACT.APP.API.SERVER}rooms/${hotelId}`,
+        `${process.env.REACT_APP_API_SERVER}rooms/${hotelId}`,
         { ...info, roomNumbers },
         { withCredentials: true }
         );

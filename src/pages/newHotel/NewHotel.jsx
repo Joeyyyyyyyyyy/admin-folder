@@ -70,7 +70,7 @@ const NewHotel = () => {
 
       console.log(newhotel);
 
-      const res = await fetch(`${process.env.REACT.APP.API.SERVER}hotels`, {
+      const res = await fetch(`${process.env.REACT_APP_API_SERVER}hotels`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",

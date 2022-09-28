@@ -13,7 +13,7 @@ const Datatable = ({ columns }) => {
   const path = location.pathname.split("/")[1];
   const [list, setList] = useState({});
   const { data, loading, error } = useFetch(
-    `${process.env.REACT.APP.API.SERVER}${path}`
+    `${process.env.REACT_APP_API_SERVER}${path}`
   );
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Datatable = ({ columns }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:8800/api/${path}/${id}`, {
+        axios.delete(`${process.env.REACT_APP_API_SERVER}${path}/${id}`, {
           withCredentials: true,
         });
         setList(list.filter((item) => item._id !== id));
