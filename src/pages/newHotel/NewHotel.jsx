@@ -14,7 +14,7 @@ const NewHotel = () => {
   const [rooms, setRooms] = useState([]);
   const navigate = useNavigate()
 
-  const { data, loading, error } = useFetch("http://localhost:8800/api/rooms");
+  const { data, loading, error } = useFetch(`${process.env.REACT_APP_API_SERVER}rooms`);
 
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
